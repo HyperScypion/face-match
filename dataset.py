@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+import os
 import wget
 import numpy as np
 
@@ -34,8 +35,18 @@ class DataSet(ABC):
 
 class CelebMatcherDataset(DataSet):
     def __init__(self, name="celeb_matcher_dataset", file_format="numpy"):
+        """
+        Example class implements celebrities dataset which we used as example. It can be used for writing different
+        dataset classes and loaders.
+        :param name: string with the name of the dataset.
+        :param file_format: format of data file to be saved.
+        """
         self.dataset_name = name
         self.file_format = file_format
+        self.__create_path()
+
+    def __create_path(self):
+        os.makedirs(self.dataset_name, exist_ok=True)
 
     def download_dataset(self, link: str, extension: str):
         wget.download(link, self.dataset_name + extension)
